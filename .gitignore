@@ -1,0 +1,15 @@
+# Ignora arquivos de dados em qualquer subpasta
+**/data/*.csv
+**/data/*.sqlite
+**/data/*.db
+
+# Ambientes virtuais e cache
+.venv/
+venv/
+env/
+__pycache__/
+.ipynb_checkpoints/
+
+# Arquivos do sistema
+.DS_Store
+Thumbs.db
