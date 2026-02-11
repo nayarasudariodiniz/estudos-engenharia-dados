@@ -1,34 +1,61 @@
-# 📦 E-Commerce Data Pipeline & Analysis (Olist)
-
 ![Python](https://img.shields.io/badge/python-3.10+-blue.svg)
 ![Pandas](https://img.shields.io/badge/pandas-%23150458.svg?style=flat&logo=pandas&logoColor=white)
 ![SQLite](https://img.shields.io/badge/sqlite-%2307405e.svg?style=flat&logo=sqlite&logoColor=white)
-![Status](https://img.shields.io/badge/status-em%20constru%C3%A7%C3%A3o-orange)
+![Status](https://img.shields.io/badge/Status-Concluído-brightgreen)
 
-Este projeto simula um ambiente real de Engenharia de Dados, utilizando o dataset público da **Olist** (maior marketplace do Brasil). O objetivo é transformar dados brutos em inteligência de negócio através de uma arquitetura relacional.
+# Análise de Dados E-commerce Olist (2016-2018)
 
-## 🚀 Status do Projeto
-O projeto está atualmente na fase de **Análise Exploratória e Limpeza de Dados**. As próximas etapas incluem modelagem avançada (Joins/Merges) e visualização de dados.
+Este projeto realiza uma análise exploratória e estrutural dos dados de vendas da Olist, focando em performance financeira, comportamento temporal e integração de múltiplas fontes de dados para extração de insights estratégicos.
 
-## 📋 Pré-requisitos & Instalação
+## 🚀 Como Executar o Projeto
 
-> **⚠️ IMPORTANTE:** Para garantir a integridade das análises, siga os passos abaixo:
-> 1. Realize o download dos arquivos brutos diretamente no [Kaggle da Olist](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce).
-> 2. Execute o script de criação do banco de dados (SQL) disponível na pasta `scripts/` para gerar o arquivo `olist.db`.
+Para reproduzir esta análise, siga os passos abaixo:
 
-## 🛠️ Tecnologias Utilizadas
-- **Python**: Linguagem core para manipulação.
-- **Pandas**: Biblioteca principal para análise de dados.
-- **SQLite**: Banco de dados relacional para armazenamento e consultas SQL.
-- **VS Code + Jupyter Notebooks**: Ambiente de desenvolvimento.
+1.  **Dados:** Baixe os arquivos originais diretamente do [Kaggle - Brazilian E-Commerce Public Dataset by Olist](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce).
+2.  **Banco de Dados:** Execute o script de criação do banco de dados SQL para consolidar os arquivos CSV em tabelas relacionais.
+3.  **Dependências:** Certifique-se de ter as bibliotecas instaladas:
+    ```bash
+    pip install pandas matplotlib numpy sqlite3
+    ```
 
-## 📈 Evolução do Trabalho (Log de Atividades)
-Até o momento, o pipeline contempla:
-1. **Configuração de Ambiente**: Uso de ambientes virtuais (`.venv`) e conexão com SQLite.
-2. **Extração via SQL**: Consultas de faturamento e volumetria direto do banco de dados.
-3. **Data Cleaning**: Tratamento crítico de valores nulos (imputação por mediana e valores constantes) em vez de exclusão.
-4. **Análise Multidimensional**: Implementação de `MultiIndex` e `Cross-section (xs)` para entender o faturamento por Estado e Categoria.
-5. **Estatística Descritiva**: Uso de agrupamentos complexos para cálculo de Ticket Médio e Desvio Padrão.
+## 🛠️ Tecnologias e Conceitos Aplicados
+
+* **I/O de Dados:** Integração entre SQL, CSV e dicionários de tradução utilizando as ferramentas de IO do Pandas (`read_sql`, `read_csv`).
+* **ETL e Limpeza:** Tratamento de tipos de dados, conversão de Timestamps e gestão de dados nulos ou infinitos.
+* **Data Storytelling:** Visualização de dados avançada com Matplotlib para comunicação de resultados executivos.
 
 ---
-✨ *Este projeto está sendo desenvolvido como parte do meu portfólio de Engenharia de Dados.*
+
+## 🧠 Aprendizados de Percurso (Insights Técnicos)
+
+Durante o desenvolvimento, desafios reais de engenharia e análise de dados foram superados:
+
+### 1. Integridade Temporal e Slicing
+* **Preservação do Raw Data:** Identificou-se que a extração precoce de componentes da data (ano/mês) limitava o uso de funções de `resample`. A solução foi preservar o timestamp original durante os merges para garantir a integridade das séries temporais. 
+* **Ordenação (Monotonic Index):** Para realizar cortes temporais (slicing) sem erros de `KeyError`, aplicamos o `.sort_index()`, garantindo que o índice de tempo estivesse em ordem cronológica antes de qualquer filtragem.
+
+### 2. Visualização e Escala Financeira
+* **Faturamento vs. Crescimento:** Enquanto o faturamento absoluto mostra o tamanho do negócio, aplicamos o método `.pct_change()` para observar o ritmo (Month-over-Month). Isso revelou comportamentos sazonais, como a "ressaca" de vendas após a Black Friday.
+* **Data Formatting:** Eliminamos a notação científica (`1e6`) nos eixos utilizando o `ticker.FuncFormatter`, convertendo valores brutos para o padrão monetário brasileiro (R$). Também utilizamos `mdates.DateFormatter` para limpar a visualização do eixo cronológico.
+
+### 3. Integração e Tradução
+* Utilizamos a tabela de tradução de categorias para enriquecer a base de itens, permitindo que as visualizações finais utilizassem nomenclaturas padronizadas e amigáveis ao negócio.
+
+---
+
+## 📈 Resultados e Visualizações
+
+O projeto consolida análises sobre:
+* **Evolução Mensal:** Comparativo entre volume de pedidos e receita total.
+* **Taxa de Crescimento (MoM%):** Identificação de picos de demanda e períodos de retração.
+* **Top 10 Categorias:** Ranking das categorias que mais geram faturamento para a plataforma.
+
+---
+
+## 📁 Versionamento e Segurança
+
+* **Git Workflow:** O projeto utiliza versionamento semântico para documentar a evolução das etapas de ETL.
+* **Segurança:** Arquivos volumosos (`.csv`, `.db`) e ambientes virtuais (`.venv`) são ignorados via `.gitignore`, mantendo o repositório leve e focado apenas no código e documentação.
+
+---
+*Projeto desenvolvido como parte do portfólio de Engenharia e Análise de Dados.*
